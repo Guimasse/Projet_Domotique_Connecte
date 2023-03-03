@@ -9,6 +9,17 @@ def register():
 
 	database_handler.create_person(username, password)
 
+def login():
+	print("---Login---")
+	username = input("Username : ")
+	password = input("Mot de passe : ")
+
+	if database_handler.user_exists_with(username) and password == database_handler.password_for(username):
+		#menu_connected()
+		print("login")
+	else:
+		print("Nom d'utilisateur/mot de passe incorrect.")
+
 def menu_not_connect():
 	while True:
 		print("Bienvenue !")
@@ -19,6 +30,7 @@ def menu_not_connect():
 
 		if choix == 1:
 			login()
+
 		if choix == 2:
 			register()
 

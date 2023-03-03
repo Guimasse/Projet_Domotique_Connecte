@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 class DatabaseHandler():
-	def _init_(self, database_name : str):
+	def __init__(self, database_name : str):
 		self.con = sqlite3.connect(f"{os.path.dirname(os.path.abspath(__file__))}/{database_name}")
 		self.con.row_factory = sqlite3.Row
 
@@ -18,6 +18,14 @@ class DatabaseHandler():
 		query = f"SELECT password FROM Person WHERE username = ?;"
 		cursor.execute(query, (username,))
 		result = cursor.fetchall()
-		print(result)
-		print(result[0])
-		print(dict(result[0]))
+		cursor.close()
+		return dict(result[0])["password"]
+
+	def user_exists_with(self, username: str) -> bool:
+		cursor = self.con.cursor()
+		query = f"SELECT * FROM Person WHERE username = ?;"
+		cursor.execute(query, (username,))
+		result = cursor.fetchall()
+		cursor.close()
+
+		return len(result) == 1
