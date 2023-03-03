@@ -1,0 +1,1 @@
+C:/server_sql/mysql/bin/mysqld.exe --console
