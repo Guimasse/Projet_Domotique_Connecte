@@ -1,31 +1,51 @@
 import os
-import sqlite3
+import mysql.connector as MC
 
 class DatabaseHandler():
-	def __init__(self, database_name : str):
-		self.con = sqlite3.connect(f"{os.path.dirname(os.path.abspath(__file__))}/{database_name}")
-		self.con.row_factory = sqlite3.Row
+	def __init__(self):
+		try:
+			self.conn = MC.connect(host = 'localhost', database = 'datatest', user = 'root', password = '')
+			cursor = self.conn.cursor()
+		except MC.Error as err:
+			print(err)
+		finally:
+			if(self.conn.is_connected()):
+				print("connected")
 
 	def create_person(self, username: str, password: str):
-		cursor = self.con.cursor()
-		query = f"INSERT INTO Person (username, password) VALUES (?, ?);"
-		cursor.execute(query, (username, password,))
+		cursor = self.conn.cursor()
+		req = 'INSERT INTO `person`(`username`, `password`) VALUES (%s,%s);'
+		info =(username, password)
+		cursor.execute(req, info)
+		self.conn.commit()
 		cursor.close()
-		self.con.commit()
 
 	def password_for(self, username: str):
-		cursor = self.con.cursor()
-		query = f"SELECT password FROM Person WHERE username = ?;"
-		cursor.execute(query, (username,))
+		cursor = self.conn.cursor()
+		req = 'SELECT `password` FROM `person` WHERE `username` = %s;'
+		cursor.execute(req, (username,))
 		result = cursor.fetchall()
 		cursor.close()
-		return dict(result[0])["password"]
+		return(format(result[0]))
 
 	def user_exists_with(self, username: str) -> bool:
-		cursor = self.con.cursor()
-		query = f"SELECT * FROM Person WHERE username = ?;"
-		cursor.execute(query, (username,))
+		cursor = self.conn.cursor()
+		req = 'SELECT * FROM `person` WHERE `username` = %s;'
+		cursor.execute(req, (username,))
 		result = cursor.fetchall()
 		cursor.close()
 
 		return len(result) == 1
+
+	def password_edit(self, username: str, password: str):
+		cursor =self.conn.cursor()
+		req = 'UPDATE `person` SET `password`=%s WHERE `username`=%s;'
+		cursor.execute(req, (password, username,))
+		self.conn.commit()
+		cursor.close()
+
+	def stop(self):
+		cursor =self.conn.cursor()
+		cursor.close()
+		self.conn.close()
+		exit();
