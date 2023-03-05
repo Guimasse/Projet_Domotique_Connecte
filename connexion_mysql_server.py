@@ -24,10 +24,11 @@ def delete_user():
 def modif():
 	print("---Edit---")
 	username = input("Username : ")
-	password = input("Mot de passe a modifier : ")
+	password = input("Mot de passe : ")
 	verif = "('"+password+"',)"
 
 	if database_handler.user_exists_with(username) and verif == database_handler.password_for(username):
+		password = input("Mot de passe a modifier : ")
 		database_handler.password_edit(username, password)
 		print("Mots de passe modifié !")
 	else:

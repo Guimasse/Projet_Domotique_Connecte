@@ -61,5 +61,6 @@ class DatabaseHandler():
 		cursor =self.conn.cursor()
 		cursor.close()
 		self.conn.close()
+		subprocess.check_call(('start',stop_server), shell=True)
 		subprocess.check_call(('taskkill /f /im xampp-control.exe'), shell=True)
 		exit();
