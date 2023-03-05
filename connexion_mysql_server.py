@@ -9,12 +9,29 @@ def register():
 
 	database_handler.create_person(username, password)
 
+def delete_user():
+	print("---Delete---")
+	username = input("Username : ")
+	password = input("Mot de passe : ")
+	verif = "('"+password+"',)"
+
+	if database_handler.user_exists_with(username) and verif == database_handler.password_for(username):
+		database_handler.delete_user(username)
+		print("Utilsiateur supprimé !")
+	else:
+		print("Nom d'utilisateur/mot de passe incorrect.")
+
 def modif():
 	print("---Edit---")
 	username = input("Username : ")
 	password = input("Mot de passe a modifier : ")
+	verif = "('"+password+"',)"
 
-	database_handler.password_edit(username, password)
+	if database_handler.user_exists_with(username) and verif == database_handler.password_for(username):
+		database_handler.password_edit(username, password)
+		print("Mots de passe modifié !")
+	else:
+		print("Nom d'utilisateur/mot de passe incorrect.")
 
 
 def login():
@@ -28,7 +45,6 @@ def login():
 		print("login")
 	else:
 		print("Nom d'utilisateur/mot de passe incorrect.")
-		print(database_handler.password_for(username))
 
 def menu_not_connect():
 	while True:
@@ -37,7 +53,8 @@ def menu_not_connect():
 		print("1. Login")
 		print("2. Register")
 		print("3. Edit")
-		print("4. Exit")
+		print("4. Delete")
+		print("5. Exit")
 		choix = int(input())
 
 		if choix == 1:
@@ -48,7 +65,11 @@ def menu_not_connect():
 
 		if choix == 3:
 			modif()
+
 		if choix == 4:
+			delete_user()
+
+		if choix == 5:
 			database_handler.stop()
 
 menu_not_connect()
