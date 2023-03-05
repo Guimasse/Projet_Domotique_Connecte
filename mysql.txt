@@ -1,0 +1,17 @@
+Lancer le serveur mysql : .\mysqld.exe --console
+
+connexion serveur mysql dans un autre cmd : .\mysql.exe -u root
+
+Voir les bases de donnée : SHOW DATABASES;
+
+Créer une base de donnée : CREATE DATABASE 'name';
+
+Basculer sur la base de donnée : use 'dbname';
+
+Créer un table de donnée : CREATE TABLE 'tablename' (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, ... VARCHAR(20));
+
+Voir le contenu du base de donnée : SELECT * FROM 'tablename'
+
+Quitter la connextion : exit
+
+Quitter le serveur dans le cmd .\mysqladmin.exe -u root -p shutdown
