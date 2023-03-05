@@ -1,29 +1,23 @@
 import os
-import subprocess
 import mysql.connector as MC
 import time
 
-start_server = 'C:/xampp/xampp-control.exe'
-stop_server = 'C:/xampp/xampp_stop.exe'
 
-subprocess.check_call(('start',start_server), shell=True)
 print("Starting !")
 for i in range (5):
 	print('========')
-	time.sleep(1)
+	#time.sleep(1)
 
 class DatabaseHandler():
 	def __init__(self):
 		try:
-			self.conn = MC.connect(host = 'localhost', database = 'datatest', user = 'root', password = '')
+			self.conn = MC.connect(host = '192.168.1.38', database = 'datatest', user = 'root', password = '')
 			cursor = self.conn.cursor()
 		except MC.Error as err:
 			print(err)
 			while True:
 				choix = input("Tapez 'e' pour quitter !")
 				if choix == 'e':
-					subprocess.check_call(('start',stop_server), shell=True)
-					subprocess.check_call(('taskkill /f /im xampp-control.exe'), shell=True)
 					exit()
 		finally:
 			if(self.conn.is_connected()):
@@ -72,6 +66,4 @@ class DatabaseHandler():
 		cursor =self.conn.cursor()
 		cursor.close()
 		self.conn.close()
-		subprocess.check_call(('start',stop_server), shell=True)
-		subprocess.check_call(('taskkill /f /im xampp-control.exe'), shell=True)
 		exit();
