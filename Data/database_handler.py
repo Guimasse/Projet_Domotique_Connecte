@@ -1,5 +1,11 @@
 import os
+import subprocess
 import mysql.connector as MC
+
+start_server = 'C:/xampp/xampp-control.exe'
+stop_server = 'C:/xampp/xampp_stop.exe'
+
+subprocess.check_call(('start',start_server), shell=True)
 
 class DatabaseHandler():
 	def __init__(self):
@@ -44,8 +50,16 @@ class DatabaseHandler():
 		self.conn.commit()
 		cursor.close()
 
+	def delete_user(self, username:str):
+		cursor =self.conn.cursor()
+		req = 'DELETE FROM `person` WHERE `username`=%s;'
+		cursor.execute(req, (username,))
+		self.conn.commit()
+		cursor.close()
+
 	def stop(self):
 		cursor =self.conn.cursor()
 		cursor.close()
 		self.conn.close()
+		subprocess.check_call(('taskkill /f /im xampp-control.exe'), shell=True)
 		exit();
