@@ -67,3 +67,8 @@ class DatabaseHandler():
 		cursor.close()
 		self.conn.close()
 		exit();
+
+	def write(self, data: int, name: str):
+		cursor =self.conn.cursor()
+		req = 'UPDATE `sensors` SET `value`=%d WHERE `ID_sensor`=%s;'
+		
